@@ -68,8 +68,8 @@ public class MainApp {
                 System.out.println("Error: la BD esta sobrecargada");
                 System.out.println("Quieres reintentar el proceso? ");
                 String respuesta = sc.next();
-                if(respuesta.equalsIgnoreCase("S")){
-                    repetir=true;
+                if (respuesta.equalsIgnoreCase("S")) {
+                    repetir = true;
                 }
             } finally {
                 bd.disconnect();
@@ -79,49 +79,119 @@ public class MainApp {
 
     private static void listarEmpleadosOrdenadosPorCategoria() throws SQLException {
         BDEmpleado bd = new BDEmpleado();
-        try {
-            bd.connect();
-            bd.selectAllOrderByCategoria();
-        } catch (SQLException e) {
-            System.out.println("Error: la BD esta sobrecargada");
-        } finally {
-            bd.disconnect();
-        }
+        boolean repetir = false;
+        Scanner sc = new Scanner(System.in);
+
+        do {
+            try {
+                bd.connect();
+                for (Empleado e : bd.selectAllOrderByCategoria()) {
+                    System.out.println(e);
+                }
+                repetir = false;
+            } catch (SQLException e) {
+                System.out.println("Error: la BD esta sobrecargada");
+                System.out.println("Quieres reintentar el proceso? ");
+                String respuesta = sc.next();
+                if (respuesta.equalsIgnoreCase("S")) {
+                    repetir = true;
+                }
+            } finally {
+                bd.disconnect();
+            }
+        } while (repetir);
     }
 
     private static void buscarEmpleadoPorCodigo() throws SQLException {
         BDEmpleado bd = new BDEmpleado();
-        Teclado t = new Teclado();
-        try {
-            bd.connect();
-            System.out.println("Escribe el ");
-            bd.selectByCodigo(t.leeEntero());
-        } catch (SQLException e) {
-            System.out.println("Error: la BD esta sobrecargada");
-        } finally {
-            bd.disconnect();
-        }
+        Scanner sc = new Scanner(System.in);
+        boolean repetir = false;
+
+        do {
+            try {
+                bd.connect();
+                System.out.println("Escribe el ceodigo del empleado a buscar ");
+                bd.selectByCodigo(sc.nextInt());
+                repetir = false;
+            } catch (SQLException e) {
+                System.out.println("Error: la BD esta sobrecargada");
+                System.out.println("Quieres reintentar el proceso? ");
+                String respuesta = sc.next();
+                if (respuesta.equalsIgnoreCase("S")) {
+                    repetir = true;
+                }
+            } finally {
+                bd.disconnect();
+            }
+        } while (repetir);
     }
 
     private static void buscarEmpleadosPorCategoria() throws SQLException {
         BDEmpleado bd = new BDEmpleado();
         Scanner sc = new Scanner(System.in);
-        try {
-            bd.connect();
-            System.out.println("Escribe la categoria");
-            bd.selectByCategoria(sc.nextLine());
-        } catch (SQLException e) {
-            System.out.println("Error: la BD esta sobrecargada");
-        } finally {
-            bd.disconnect();
-        }
+        boolean repetir = false;
+        do {
+            try {
+                bd.connect();
+                System.out.println("Escribe la categoria");
+                bd.selectByCategoria(sc.nextLine());
+            } catch (SQLException e) {
+                System.out.println("Error: la BD esta sobrecargada");
+                System.out.println("Quieres reintentar el proceso? ");
+                String respuesta = sc.next();
+                if (respuesta.equalsIgnoreCase("S")) {
+                    repetir = true;
+                }
+            } finally {
+                bd.disconnect();
+            }
+        } while (repetir);
     }
 
     private static void buscarEmpleadosPorNombreApellidos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        BDEmpleado bd = new BDEmpleado();
+        Scanner sc = new Scanner(System.in);
+        boolean repetir = false;
+        do {
+            try {
+                bd.connect();
+                System.out.println("Escribe el nombre de la persona a buscar");
+                String nombre = sc.nextLine();
+                System.out.println("Escribe los apellidos de la persona a buscar");
+                String apellidos = sc.nextLine();
+                System.out.println(bd.selectByNombreApellidos(nombre, apellidos));
+            } catch (SQLException e) {
+                System.out.println("Error: la BD esta sobrecargada");
+                System.out.println("Quieres reintentar el proceso? ");
+                String respuesta = sc.next();
+                if (respuesta.equalsIgnoreCase("S")) {
+                    repetir = true;
+                }
+            } finally {
+                bd.disconnect();
+            }
+        } while (repetir);
     }
 
     private static void buscarEmpleadosConSalarioMinimo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        BDEmpleado bd = new BDEmpleado();
+        Scanner sc = new Scanner(System.in);
+        boolean repetir = false;
+        do {
+            try {
+                bd.connect();
+                System.out.println("Escribe el salario minimo de las personas a buscar");
+                bd.selectByMinSalarioOrdered(sc.nextDouble());
+            } catch (SQLException e) {
+                System.out.println("Error: la BD esta sobrecargada");
+                System.out.println("Quieres reintentar el proceso? ");
+                String respuesta = sc.next();
+                if (respuesta.equalsIgnoreCase("S")) {
+                    repetir = true;
+                }
+            } finally {
+                bd.disconnect();
+            }
+        } while (repetir);
     }
 }
